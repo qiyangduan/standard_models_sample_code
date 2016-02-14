@@ -3,11 +3,15 @@ apply_file = "C:\\qduan\\Stanmo\\git\\bitbucket\\src\\stanmo_website_proj\\app\\
 train_file = "C:\\qduan\\Stanmo\\git\\bitbucket\\src\\stanmo_website_proj\\app\\static\\data\\churn_sample_input.csv"
 
 
+library(rpart) 
+library(caret)
+library(rattle)
+
 churn_data = read.csv(train_file, fill = TRUE) # 1 column
 # Convert 1/0 to T/F since Caret do regression instead of classification over numerical values
 churn_data[churn_data$X_churn_flag == 1,]$X_churn_flag = "T"
 churn_data[churn_data$X_churn_flag == 0,]$X_churn_flag = "F"
-# drop customer id column
+# drop customer id column, because it is the unique ID and should not be treated as a feature
 drops <- c("X_customer_id")
 train_data=churn_data[,!(names(churn_data) %in% drops)]
 # rm(churn_data)
@@ -16,11 +20,6 @@ train_data=churn_data[,!(names(churn_data) %in% drops)]
 
 
 # Classification Tree with rpart
-library(rpart) 
-library(caret)
-
-
-# grow tree 
 churn_model <- train(X_churn_flag~., method="rpart",data=train_data) 
 #printcp(churn_model) # display the results 
 #summary(churn_model) # detailed summary of splits
@@ -30,7 +29,6 @@ churn_model <- train(X_churn_flag~., method="rpart",data=train_data)
 
 
 # plot tree 
-library(rattle)
 fancyRpartPlot(churn_model$finalModel)
 
 train.predicted<-predict(churn_model,newdata=train_data)
@@ -44,7 +42,6 @@ rm(churn_model)
 
 ## load the model
 load("my_churn_model_dt.rda")
-
 ## a month later, we receive customer profile for a new month: 
 churn_apply = read.csv(apply_file, fill = TRUE) # 1 column
 # Run exactly same transformation as training data.
@@ -55,5 +52,4 @@ apply_data=churn_apply[,!(names(churn_apply) %in% drops)]
 
 apply.predicted<-predict(churn_model,newdata=apply_data)
 table(apply.predicted,apply_data$X_churn_flag)
-
 
