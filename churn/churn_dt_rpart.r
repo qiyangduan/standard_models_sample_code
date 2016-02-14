@@ -1,5 +1,7 @@
 rm(list=ls())
-churn_data = read.csv("C:\\qduan\\Stanmo\\git\\bitbucket\\src\\stanmo_website_proj\\app\\static\\data\\churn_sample_input.csv", fill = TRUE) # 1 column
+apply_file = "C:\\qduan\\Stanmo\\git\\bitbucket\\src\\stanmo_website_proj\\app\\static\\data\\churn_sample_apply.csv"
+train_file = "C:\\qduan\\Stanmo\\git\\bitbucket\\src\\stanmo_website_proj\\app\\static\\data\\churn_sample_input.csv"
+churn_data = read.csv(train_file, fill = TRUE) # 1 column
 
 # Convert 1/0 to T/F since Caret do regression instead of classification over numerical values
 churn_data[churn_data$X_churn_flag == 1,]$X_churn_flag = "T"
@@ -42,7 +44,7 @@ rm(churn_model)
 load("my_churn_model_dt.rda")
 
 ## a month later, we receive customer profile for a new month: 
-churn_apply = read.csv("C:\\qduan\\Stanmo\\git\\bitbucket\\src\\stanmo_website_proj\\app\\static\\data\\churn_sample_apply.csv", fill = TRUE) # 1 column
+churn_apply = read.csv(apply_file, fill = TRUE) # 1 column
 # Run exactly same transformation as training data.
 churn_apply[churn_apply$X_churn_flag == 1,]$X_churn_flag = "T"
 churn_apply[churn_apply$X_churn_flag == 0,]$X_churn_flag = "F"
