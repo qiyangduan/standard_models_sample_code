@@ -1,16 +1,18 @@
 rm(list=ls())
 apply_file = "C:\\qduan\\Stanmo\\git\\bitbucket\\src\\stanmo_website_proj\\app\\static\\data\\churn_sample_apply.csv"
 train_file = "C:\\qduan\\Stanmo\\git\\bitbucket\\src\\stanmo_website_proj\\app\\static\\data\\churn_sample_input.csv"
-churn_data = read.csv(train_file, fill = TRUE) # 1 column
 
+
+churn_data = read.csv(train_file, fill = TRUE) # 1 column
 # Convert 1/0 to T/F since Caret do regression instead of classification over numerical values
 churn_data[churn_data$X_churn_flag == 1,]$X_churn_flag = "T"
 churn_data[churn_data$X_churn_flag == 0,]$X_churn_flag = "F"
 # drop customer id column
 drops <- c("X_customer_id")
 train_data=churn_data[,!(names(churn_data) %in% drops)]
-rm(churn_data)
+# rm(churn_data)
 # head(train_data,3)
+# head(churn_data,3)
 
 
 # Classification Tree with rpart
