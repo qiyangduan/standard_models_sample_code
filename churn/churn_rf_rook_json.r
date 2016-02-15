@@ -40,14 +40,13 @@ load("c:\\tmp\\my_churn_model_rf.rda")
 
 
 write.json_churn.HTML <- function(request, response, churn_model) {
-
     if ("json_df" %in% names(request$POST())) {
 
         dfjson = request$POST()$json_df 
-        print(dfjson)
+        # print(dfjson)
         churn_df = fromJSON(dfjson)
         churn_df$X_churn_flag='?'
-        print(str(churn_df))
+        # print(str(churn_df))
         result_df <- churn_df[c("X_customer_id")]
 
         # Run exactly same transformation as training data.
