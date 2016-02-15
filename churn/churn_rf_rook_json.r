@@ -56,7 +56,7 @@ write.json_churn.HTML <- function(request, response, churn_model) {
         a_apply_data=churn_df[,!(names(churn_df) %in% drops)]
 
         apply.predicted<-predict(churn_model,newdata=a_apply_data)
-        print(str(apply.predicted))
+        # print(str(apply.predicted))
         result_df["predicted_churn_flag"] <- apply.predicted
 
         #response$write("<h1>The input</h1><br>")
